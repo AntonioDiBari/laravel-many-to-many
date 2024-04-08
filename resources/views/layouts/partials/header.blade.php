@@ -1,7 +1,7 @@
 <header>
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand" href="#">ProjectsHub</a>
+            <a class="navbar-brand" href="#">BoolFolio</a>
             <button aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
                 class="navbar-toggler" data-bs-target="#navbarSupportedContent" data-bs-toggle="collapse" type="button">
                 <span class="navbar-toggler-icon"></span>
@@ -17,7 +17,8 @@
                                 'nav-link',
                                 'active' =>
                                     Route::currentRouteName() == 'admin.projects.index' ||
-                                    Route::currentRouteName() == 'admin.projects.show',
+                                    Route::currentRouteName() == 'admin.projects.show' ||
+                                    Route::currentRouteName() == 'admin.projects.edit',
                             ]) aria-current="page"
                                 href="{{ route('admin.projects.index') }}">Projects</a>
                         </li>
@@ -26,9 +27,20 @@
                                 'nav-link',
                                 'active' =>
                                     Route::currentRouteName() == 'admin.types.index' ||
-                                    Route::currentRouteName() == 'admin.types.show',
+                                    Route::currentRouteName() == 'admin.types.show' ||
+                                    Route::currentRouteName() == 'admin.types.edit',
                             ]) aria-current="page"
                                 href="{{ route('admin.types.index') }}">Types</a>
+                        </li>
+                        <li class="nav-item">
+                            <a @class([
+                                'nav-link',
+                                'active' =>
+                                    Route::currentRouteName() == 'admin.technologies.index' ||
+                                    Route::currentRouteName() == 'admin.technologies.show' ||
+                                    Route::currentRouteName() == 'admin.technologies.edit',
+                            ]) aria-current="page"
+                                href="{{ route('admin.technologies.index') }}">Technologies</a>
                         </li>
                     @endauth
 

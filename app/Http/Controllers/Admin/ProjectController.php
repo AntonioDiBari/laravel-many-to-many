@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 
 use App\Models\Project;
+use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Http\Request;
 
@@ -30,8 +31,9 @@ class ProjectController extends Controller
     public function create()
     {
         $types = Type::all();
+        $technologies = Technology::all();
         $project = new Project;
-        return view('admin.projects.form', compact('project', 'types'));
+        return view('admin.projects.form', compact('project', 'types', 'technologies'));
     }
 
     /**
@@ -44,10 +46,17 @@ class ProjectController extends Controller
     {
         $this->validate_form($request);
         $project_data = $request->all();
+
         $project = new Project;
 
         $project->fill($project_data);
         $project->save();
+
+        /* Dopo il save perchè al momento il nuovo Project non ha ID prima del save,
+        controllo però se c'è altrimenti posso mandare un nuovo Project senza Tech relazionate */
+        if (array_key_exists('technologies', $project_data)) {
+            $project->technologies()->attach($project_data['technologies']);
+        }
 
         return redirect()->route("admin.projects.index")
             ->with("message", "Project added successfully")
@@ -74,7 +83,13 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $types = Type::all();
-        return view('admin.projects.form', compact('project', 'types'));
+        $technologies = Technology::all();
+
+        /* Recupera gli ID delle tecnologie associate al project, lasciando non serve il ?? []
+        perchè nella store non c'è. (Ho lasciato la funzione direttamente nel ternario V/F 'checked')  */
+        $technologies_id = $project->technologies->pluck('id')->toArray();
+
+        return view('admin.projects.form', compact('project', 'types', 'technologies', /* technologies_id */));
     }
 
     /**
@@ -90,6 +105,14 @@ class ProjectController extends Controller
         $project_data = $request->all();
         $project->update($project_data);
 
+        /* Stessa della store, controllo se vuole eliminare le relazioni
+        perchè possbile possa deselezionare (eliminando con il detach senza param) */
+        if (array_key_exists('technologies', $project_data)) {
+            $project->technologies()->sync($project_data['technologies']);
+        } else {
+            $project->technologies()->detach();
+        }
+
         return redirect()->route('admin.projects.index')
             ->with("message", "Project updated successfully")
             ->with("type", "alert-info");
@@ -103,6 +126,8 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        /* Buona pratica dissociare ed eliminare le relazioni nella Pivot, prima di eliminare */
+        $project->technologies()->detach();
         $project->delete();
         return redirect()->route('admin.projects.index')
             ->with("message", "Project deleted successfully")
@@ -116,7 +141,8 @@ class ProjectController extends Controller
             'author' => 'required|string|max:100',
             'link_github' => 'required|url',
             'description' => 'nullable|min:3|max:1000',
-            'type_id' => 'required|exists:types,id'
+            'type_id' => 'required|exists:types,id',
+            'technologies' => 'exists:technologies,id'
         ], [
             'name.required' => 'Il titolo è obbligatorio',
             'author.required' => "L'autore' è obbligatorio",

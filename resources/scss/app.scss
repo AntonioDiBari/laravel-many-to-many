@@ -1,0 +1,32 @@
+@import "~bootstrap/scss/bootstrap";
+
+.wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    main {
+        flex-grow: 1;
+    }
+}
+
+header {
+    background-color: lightgray;
+    border: 6px solid rgb(163, 163, 163);
+}
+
+main {
+    background-color: whitesmoke;
+    ul {
+        list-style-type: none;
+        li a {
+            text-decoration: none;
+        }
+        li a:hover {
+            text-decoration: underline black;
+        }
+    }
+    .col-12 .subtitle {
+        font-size: 0.8rem;
+    }
+}

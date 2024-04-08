@@ -31,11 +31,11 @@
                                 </li>
                             </ul>
                             <div class="me-2 mt-2">
-                                <a href="{{-- {{ route('admin.technologies.edit', $technology) }} --}}" class="btn btn-link p-0">
+                                <a href="{{ route('admin.technologies.edit', $technology) }}" class="btn btn-link p-0">
                                     <i class="fa-solid fa-pen-to-square"></i>
                                 </a>
                                 <button type="button" class="btn btn-link text-danger p-0" data-bs-toggle="modal"
-                                    data-bs-target="#delete-{{ $technology->id }}-type">
+                                    data-bs-target="#delete-{{ $technology->id }}-technology">
                                     <i class="fa-solid fa-trash-can"></i>
                                 </button>
                             </div>
@@ -47,7 +47,7 @@
             @endforelse
         </div>
         <div class="d-flex justify-content-between my-3">
-            {{-- {{ $technologies->links() }} --}}
+            {{ $technologies->links() }}
             <a href="{{ route('admin.technologies.create') }}">Add a Technology</a>
         </div>
     </div>
@@ -66,8 +66,8 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Deleting this technology will delete <b class="text-danger">all the related projects with this
-                            technology</b>.
+                        Deleting this technology will delete the relationship with all the related projects with this
+                        technology</b>.
                         Are you sure ?
                     </div>
                     <div class="modal-footer">

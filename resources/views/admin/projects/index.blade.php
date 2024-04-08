@@ -30,7 +30,7 @@
                                     <a href="#" class="text-secondary-emphasis">{{ $project->link_github }}</a>
                                 </li>
                                 <li>
-                                    <b>Tipo progetto: </b> <span
+                                    <b>Tipo progetto: </b> <span class="badge"
                                         style="background-color:{{ $project->type->color }}">{{ $project->type->name }}</span>
                                 </li>
 

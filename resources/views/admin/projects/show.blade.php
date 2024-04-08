@@ -23,7 +23,15 @@
                     <p>{{ $project->description }}</p>
                     <b>Tipo progetto: </b>
                     <div class="mx-1">
-                        <span style="background-color:{{ $project->type->color }} ">{{ $project->type->name }}</span>
+                        <span class="badge"
+                            style="background-color:{{ $project->type->color }} ">{{ $project->type->name }}</span>
+                    </div>
+                    <b>Tecnologie usate: </b>
+                    <div class="mx-1">
+                        @foreach ($project->technologies as $technology)
+                            <span class="badge"
+                                style="background-color:{{ $technology->color }} ">{{ $technology->name }}</span>
+                        @endforeach
                     </div>
                 </div>
             </div>

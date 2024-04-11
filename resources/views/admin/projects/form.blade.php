@@ -80,10 +80,23 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="col-4">
-                        <section class="mb-4">
-                            <label for="image" class="form-label">Image for the project</label>
-                            <input class="form-control" type="file" name="image" id="image">
+                    <div class="col-8">
+                        <section class="mb-4 d-flex gap-3">
+                            <div>
+                                <label for="image" class="form-label">Image for the project</label>
+                                <input class="form-control @error('image') is-invalid @enderror" type="file"
+                                    name="image" id="image">
+                                @error('image')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            @if (isset($project->image))
+                                <div>
+                                    <label clas="form-label">Previus image</label>
+                                    <img src="{{ asset('storage/' . $project->image) }}" alt=""
+                                        class="image_project">
+                                </div>
+                            @endif
                         </section>
                     </div>
                 </div>

@@ -52,8 +52,12 @@ class ProjectController extends Controller
 
         $project->fill($project_data);
 
-        $img_path = Storage::put('uploads/projects', $project_data['image']);
-        $project->image = $img_path;
+        /* gestisto l'immagine e recupero il path se
+        la mando, altrimenti image è nullable e sarà NULL*/
+        if (isset($project_data['image'])) {
+            $img_path = Storage::put('uploads/projects', $project_data['image']);
+            $project->image = $img_path;
+        }
 
         $project->save();
 
@@ -108,6 +112,17 @@ class ProjectController extends Controller
     {
         $this->validate_form($request, $project->id);
         $project_data = $request->all();
+
+        // dd($project_data);
+        /*  */
+        if (isset($project_data['image'])) {
+            if (isset($project->image)) {
+                Storage::delete($project->image);
+            }
+            $img_path = Storage::put('uploads/projects', $project_data['image']);
+            $project->image = $img_path;
+        }
+
         $project->update($project_data);
 
         /* Stessa della store, controllo se vuole eliminare le relazioni
@@ -147,7 +162,8 @@ class ProjectController extends Controller
             'link_github' => 'required|url',
             'description' => 'nullable|min:3|max:1000',
             'type_id' => 'required|exists:types,id',
-            'technologies' => 'exists:technologies,id'
+            'technologies' => 'exists:technologies,id',
+            'image' => 'nullable|image'
         ], [
             'name.required' => 'Il titolo è obbligatorio',
             'author.required' => "L'autore' è obbligatorio",

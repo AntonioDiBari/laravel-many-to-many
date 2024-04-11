@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 
 
+use App\Mail\NewProjectMail;
 use App\Models\Project;
 use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
@@ -66,6 +69,9 @@ class ProjectController extends Controller
         if (array_key_exists('technologies', $project_data)) {
             $project->technologies()->attach($project_data['technologies']);
         }
+
+        /* invio mail */
+        Mail::to(strtolower(Auth::user()->name) . '@gmail.com')->send(new NewProjectMail($project, Auth::user()->name));
 
         return redirect()->route("admin.projects.index")
             ->with("message", "Project added successfully")

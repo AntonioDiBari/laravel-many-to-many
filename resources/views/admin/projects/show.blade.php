@@ -35,6 +35,13 @@
                     </div>
                 </div>
             </div>
+            @if (isset($project->image))
+                <div class="col-4">
+                    <div class="card">
+                        <img src="{{ asset('storage/' . $project->image) }}" alt="" class="image_project">
+                    </div>
+                </div>
+            @endif
         </div>
         <div class="d-flex justify-content-end my-4">
             <a href="{{ route('admin.projects.index') }}">

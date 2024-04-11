@@ -20,7 +20,7 @@
         @endif
         <h1>{{ empty($project->id) ? 'Add Project' : 'Edit Project' }}</h1>
         <form action="{{ empty($project->id) ? route('admin.projects.store') : route('admin.projects.update', $project) }}"
-            method="POST">
+            method="POST" enctype="multipart/form-data">
             @csrf
 
             @if (!empty($project->id))
@@ -79,6 +79,12 @@
                         @error('description')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
+                    </div>
+                    <div class="col-4">
+                        <section class="mb-4">
+                            <label for="image" class="form-label">Image for the project</label>
+                            <input class="form-control" type="file" name="image" id="image">
+                        </section>
                     </div>
                 </div>
                 <div class="col-2">

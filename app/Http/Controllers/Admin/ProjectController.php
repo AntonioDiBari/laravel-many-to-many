@@ -9,6 +9,7 @@ use App\Models\Project;
 use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -50,6 +51,10 @@ class ProjectController extends Controller
         $project = new Project;
 
         $project->fill($project_data);
+
+        $img_path = Storage::put('uploads/projects', $project_data['image']);
+        $project->image = $img_path;
+
         $project->save();
 
         /* Dopo il save perchè al momento il nuovo Project non ha ID prima del save,
